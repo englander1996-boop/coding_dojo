@@ -1,0 +1,21 @@
+// 生成タスク 第6波：数値計算・微分方程式。すべて別の計算(オリジナル)。1タスク=1問。
+// 出力は丸めて(f"{x:.Nf}")バージョン非依存にする。純Python浮動小数(IEEE754)なので
+// ローカルpyとブラウザPyodideで一致する。
+const TASKS = []
+const t = (obj) => TASKS.push(obj)
+
+const POS = ['2\n', '9\n', '10\n', '1\n', '100\n', '50\n']
+const XS = ['1\n', '2\n', '0\n', '3\n', '4\n', '5\n']
+
+t({ lv: 115, concept: '数値計算: ニュートン法平方根', title: 'ニュートン法で平方根', tags: ['数値計算', 'ニュートン法'], io: '正の整数 a が与えられます。', ask: 'ニュートン法 x←(x+a/x)/2 を反復して √a を小数6桁で出力してください。', h1: 'x を a/x との平均で更新。', h2: '十分な回数反復する。', ref: 'a=int(input())\nx=float(a)\nfor _ in range(100):\n    x=(x+a/x)/2\nprint(f"{x:.6f}")', ins: POS, tip: '💡 ニュートン法は2乗で誤差が縮む(2次収束)ので数回で高精度。' })
+t({ lv: 115, concept: '数値計算: 二分法で根', title: '二分法で √a', tags: ['数値計算', '二分探索'], io: '正の整数 a が与えられます。', ask: 'x²=a の解を二分法で求め、小数6桁で出力してください。', h1: '区間 [0,max(1,a)] を半分に。', h2: 'mid² と a を比較。', ref: 'a=int(input())\nlo,hi=0.0,max(1.0,float(a))\nfor _ in range(200):\n    mid=(lo+hi)/2\n    if mid*mid<a:\n        lo=mid\n    else:\n        hi=mid\nprint(f"{(lo+hi)/2:.6f}")', ins: POS })
+t({ lv: 115, concept: '数値計算: ニュートン法立方根', title: 'ニュートン法で立方根', tags: ['数値計算', 'ニュートン法'], io: '正の整数 a が与えられます。', ask: 'ニュートン法で a の立方根を小数6桁で出力してください。', h1: 'x←(2x + a/x²)/3。', h2: '反復する。', ref: 'a=int(input())\nx=float(a)\nfor _ in range(200):\n    x=(2*x+a/(x*x))/3\nprint(f"{x:.6f}")', ins: ['8\n', '27\n', '2\n', '1\n', '64\n', '10\n'] })
+t({ lv: 115, concept: '数値計算: 台形則', title: '台形則で数値積分', tags: ['数値計算', '積分'], io: '正の整数 a が与えられます。', ask: '∫₀ᵃ x² dx を台形則(分割1000)で近似し、小数4桁で出力してください。', h1: '区間を1000分割。', h2: '両端は重み1/2。', ref: 'a=int(input())\nn=1000\nh=a/n\ns=0.0\nfor i in range(n+1):\n    x=i*h\n    w=0.5 if i==0 or i==n else 1.0\n    s+=w*x*x\nprint(f"{s*h:.4f}")', ins: ['3\n', '1\n', '2\n', '5\n', '10\n', '6\n'] })
+t({ lv: 115, concept: '数値計算: シンプソン則', title: 'シンプソン則で数値積分', tags: ['数値計算', '積分'], io: '正の整数 a が与えられます。', ask: '∫₀ᵃ x³ dx をシンプソン則(分割1000)で近似し、小数4桁で出力してください。', h1: '端1, 奇数番4, 偶数番2。', h2: '合計に h/3 を掛ける。', ref: 'a=int(input())\nn=1000\nh=a/n\ns=0.0\nfor i in range(n+1):\n    x=i*h\n    c=1 if i==0 or i==n else (4 if i%2==1 else 2)\n    s+=c*x**3\nprint(f"{s*h/3:.4f}")', ins: ['2\n', '1\n', '3\n', '4\n', '5\n', '6\n'], tip: '💡 シンプソン則は放物線近似で台形則より高精度。' })
+t({ lv: 115, concept: '数値計算: 中心差分', title: '中心差分で数値微分', tags: ['数値計算', '微分'], io: '整数 x が与えられます。', ask: 'f(t)=t³ の x における導関数を中心差分で近似し、小数2桁で出力してください。', h1: '(f(x+h)-f(x-h))/(2h)。', h2: 'h は十分小さく。', ref: 'x=int(input())\nh=1e-6\nf=lambda t:t**3\nprint(f"{(f(x+h)-f(x-h))/(2*h):.2f}")', ins: ['2\n', '5\n', '0\n', '10\n', '3\n', '1\n'] })
+t({ lv: 115, concept: '微分方程式: オイラー法(成長)', title: 'オイラー法で y′=y', tags: ['数値計算', '微分方程式'], io: '非負整数 x が与えられます。', ask: "y'=y, y(0)=1 を、区間[0,x]を20000等分(刻み h=x/20000)してオイラー法で解き、y(x) を小数4桁で出力してください。", h1: 'h=x/20000 を 20000 回。', h2: 'y ← y + h·y。', ref: 'x=int(input())\nn=20000\nh=x/n\ny=1.0\nfor _ in range(n):\n    y+=h*y\nprint(f"{y:.4f}")', ins: XS, tip: "💡 y'=y の厳密解は eˣ。オイラー法はその近似(刻みを固定すれば誰が解いても同じ値)。" })
+t({ lv: 115, concept: '微分方程式: オイラー法(減衰)', title: 'オイラー法で y′=−y', tags: ['数値計算', '微分方程式'], io: '非負整数 x が与えられます。', ask: "y'=-y, y(0)=1 を、区間[0,x]を20000等分(刻み h=x/20000)してオイラー法で解き、y(x) を小数4桁で出力してください。", h1: 'h=x/20000 を 20000 回。', h2: 'y ← y − h·y。', ref: 'x=int(input())\nn=20000\nh=x/n\ny=1.0\nfor _ in range(n):\n    y-=h*y\nprint(f"{y:.4f}")', ins: XS })
+t({ lv: 115, concept: '微分方程式: RK4', title: 'ルンゲ＝クッタ法で y′=y', tags: ['数値計算', '微分方程式'], io: '非負整数 x が与えられます。', ask: "y'=y, y(0)=1 を、区間[0,x]を2000等分(刻み h=x/2000)して4次ルンゲ=クッタ法で解き、y(x) を小数4桁で出力してください。", h1: '4つの傾き k1..k4。', h2: '加重平均 (k1+2k2+2k3+k4)/6。', ref: 'x=int(input())\nn=2000\nh=x/n\ny=1.0\nfor _ in range(n):\n    k1=y\n    k2=y+h/2*k1\n    k3=y+h/2*k2\n    k4=y+h*k3\n    y+=h/6*(k1+2*k2+2*k3+k4)\nprint(f"{y:.4f}")', ins: XS, tip: '💡 RK4 は数値解法の定番。刻みを固定すれば出力は一意。' })
+t({ lv: 115, concept: '数値計算: ロジスティック写像', title: 'ロジスティック写像', tags: ['数値計算', '力学系'], io: 'パラメータ r (小数) と反復回数 n が空白区切りで与えられます。', ask: 'x₀=0.5 から xₙ₊₁=r·xₙ·(1−xₙ) を n 回反復した値を小数6桁で出力してください。', h1: '漸化式をそのまま反復。', h2: 'float(r) に変換。', ref: 'a=input().split()\nr=float(a[0])\nn=int(a[1])\nx=0.5\nfor _ in range(n):\n    x=r*x*(1-x)\nprint(f"{x:.6f}")', ins: ['3.2 10\n', '2.0 5\n', '3.5 20\n', '1.5 8\n', '3.9 15\n', '2.8 12\n'], tip: '💡 r を上げると周期倍化からカオスへ。単純な式が複雑な挙動を生む。' })
+
+export const CATALOG = TASKS

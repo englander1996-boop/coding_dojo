@@ -1,0 +1,27 @@
+// 生成タスク 第9波：整数論2・数列2・組合せ数。整数=採点が一意。
+const TASKS = []
+const t = (obj) => TASKS.push(obj)
+
+const NN = ['12\n', '7\n', '100\n', '1\n', '60\n', '30\n']
+// 整数論2 (lv130)
+t({ lv: 130, concept: '整数論: 約数の積', title: '約数の積', tags: ['数論'], io: '正の整数 n が与えられます。', ask: 'n のすべての正の約数の積を出力してください。', h1: '約数を全部掛ける。', h2: '1〜n で割り切れるもの。', ref: 'n=int(input())\np=1\nfor i in range(1,n+1):\n    if n%i==0:\n        p*=i\nprint(p)', ins: NN })
+t({ lv: 130, concept: '整数論: メビウス関数', title: 'メビウス関数 μ(n)', tags: ['数論', '素数'], io: '正の整数 n が与えられます。', ask: 'メビウス関数 μ(n) を出力してください (平方因子があれば0、相異なる素因数 k 個なら (-1)^k)。', h1: '素因数分解する。', h2: '同じ素因数が2回出たら0。', ref: 'n=int(input())\nres=1\nx=n\nd=2\nwhile d*d<=x:\n    if x%d==0:\n        x//=d\n        if x%d==0:\n            res=0\n            break\n        res=-res\n    d+=1\nif res!=0 and x>1:\n    res=-res\nprint(res)', ins: ['1\n', '2\n', '6\n', '12\n', '30\n', '7\n'] })
+t({ lv: 130, concept: '整数論: 根基(radical)', title: '根基 rad(n)', tags: ['数論', '素数'], io: '正の整数 n が与えられます。', ask: 'n の相異なる素因数の積 (根基) を出力してください。', h1: '各素因数を1回だけ掛ける。', h2: '重複は無視。', ref: 'n=int(input())\nr=1\nx=n\nd=2\nwhile d*d<=x:\n    if x%d==0:\n        r*=d\n        while x%d==0:\n            x//=d\n    d+=1\nif x>1:\n    r*=x\nprint(r)', ins: ['12\n', '60\n', '7\n', '1\n', '100\n', '30\n'] })
+t({ lv: 130, concept: '整数論: 平方因子を持たないか', title: '平方因子を持たない数か', tags: ['数論', '素数'], io: '正の整数 n が与えられます。', ask: '1以外の平方数で割り切れなければ yes、割り切れれば no を出力してください。', h1: 'd² が割り切るか調べる。', h2: 'd を 2..√n で。', ref: 'n=int(input())\nsf=True\nd=2\nwhile d*d<=n:\n    if n%(d*d)==0:\n        sf=False\n        break\n    d+=1\nprint("yes" if sf else "no")', ins: ['12\n', '30\n', '18\n', '7\n', '1\n', '50\n'] })
+t({ lv: 130, concept: '整数論: ルジャンドルの公式', title: '階乗に含まれる素数の指数', tags: ['数論', '素数'], io: '整数 n と素数 p が空白区切りで与えられます。', ask: 'n! に素因数 p が何個含まれるか (ルジャンドルの公式) を出力してください。', h1: 'n//p + n//p² + ...', h2: 'p の冪で割って足す。', ref: 'n,p=map(int,input().split())\nc=0\nf=p\nwhile f<=n:\n    c+=n//f\n    f*=p\nprint(c)', ins: ['10 2\n', '25 5\n', '100 3\n', '6 2\n', '7 7\n', '50 5\n'], tip: '💡 n! の末尾0の個数はルジャンドルの公式で p=5 のときの値。' })
+t({ lv: 130, concept: '整数論: 階乗の桁数', title: 'n! の桁数', tags: ['数論'], io: '非負整数 n が与えられます。', ask: 'n! の桁数を出力してください。', h1: 'math.factorial の文字列長。', h2: 'len(str(...))。', ref: 'import math\nn=int(input())\nprint(len(str(math.factorial(n))))', ins: ['5\n', '10\n', '1\n', '20\n', '100\n', '0\n'] })
+t({ lv: 130, concept: '整数論: 最小の素因数', title: '最小の素因数', tags: ['数論', '素数'], io: '2以上の整数 n が与えられます。', ask: '最小の素因数を出力してください。', h1: '2から順に割れるか。', h2: '最初に割れた数。', ref: 'n=int(input())\nd=2\nwhile n%d!=0:\n    d+=1\nprint(d)', ins: ['12\n', '7\n', '15\n', '100\n', '97\n', '49\n'] })
+
+// 数列2 (lv7)
+t({ lv: 7, concept: '数列: トリボナッチ数', title: 'トリボナッチ数', tags: ['数列'], io: '非負整数 n が与えられます。', ask: '第 n トリボナッチ数 (T0=0,T1=1,T2=1, 以降は直前3項の和) を出力してください。', h1: '直前3項を足す。', h2: '3項を更新。', ref: 'n=int(input())\nt=[0,1,1]\nfor i in range(3,n+1):\n    t.append(t[-1]+t[-2]+t[-3])\nprint(t[n])', ins: ['0\n', '1\n', '5\n', '10\n', '8\n', '3\n'] })
+t({ lv: 7, concept: '数列: ペル数', title: 'ペル数', tags: ['数列'], io: '非負整数 n が与えられます。', ask: '第 n ペル数 (P0=0,P1=1, Pn=2P(n-1)+P(n-2)) を出力してください。', h1: '漸化式をそのまま。', h2: '2倍して足す。', ref: 'n=int(input())\na,b=0,1\nfor _ in range(n):\n    a,b=b,2*b+a\nprint(a)', ins: ['0\n', '1\n', '5\n', '8\n', '3\n', '10\n'] })
+t({ lv: 7, concept: '数列: 四面体数', title: '四面体数', tags: ['数列'], io: '非負整数 n が与えられます。', ask: '第 n 四面体数 n(n+1)(n+2)/6 を出力してください。', h1: '公式に代入。', h2: '整数除算。', ref: 'n=int(input())\nprint(n*(n+1)*(n+2)//6)', ins: ['1\n', '2\n', '3\n', '5\n', '10\n', '0\n'] })
+t({ lv: 7, concept: '数列: パドヴァン数列', title: 'パドヴァン数列', tags: ['数列'], io: '非負整数 n が与えられます。', ask: '第 n パドヴァン数 (P0=P1=P2=1, Pn=P(n-2)+P(n-3)) を出力してください。', h1: '2つ前と3つ前を足す。', h2: '配列で持つ。', ref: 'n=int(input())\np=[1,1,1]\nfor i in range(3,n+1):\n    p.append(p[i-2]+p[i-3])\nprint(p[n])', ins: ['0\n', '3\n', '5\n', '10\n', '7\n', '2\n'] })
+
+// 組合せ数 (lv130)
+t({ lv: 130, concept: '組合せ: 完全順列(モンモール数)', title: '完全順列の数', tags: ['組合せ'], io: '非負整数 n が与えられます。', ask: 'どの要素も元の位置に来ない並べ方 (完全順列) の数を出力してください。', h1: 'D(n)=(n-1)(D(n-1)+D(n-2))。', h2: 'D0=1,D1=0。', ref: 'n=int(input())\na,b=1,0\nif n==0:\n    print(1)\nelse:\n    for i in range(2,n+1):\n        a,b=b,(i-1)*(b+a)\n    print(b)', ins: ['0\n', '1\n', '4\n', '5\n', '3\n', '6\n'], tip: '💡 完全順列の確率は n→∞ で 1/e に近づく。' })
+t({ lv: 130, concept: '組合せ: ベル数', title: 'ベル数', tags: ['組合せ'], io: '非負整数 n が与えられます。', ask: 'n 要素の集合の分割の総数 (ベル数) を出力してください。', h1: 'ベルの三角形で作る。', h2: '各行の先頭が答え。', ref: 'n=int(input())\nrow=[1]\nfor i in range(n):\n    nxt=[row[-1]]\n    for x in row:\n        nxt.append(nxt[-1]+x)\n    row=nxt\nprint(row[0])', ins: ['0\n', '1\n', '4\n', '5\n', '3\n', '6\n'] })
+t({ lv: 130, concept: '組合せ: 分割数', title: '整数の分割数', tags: ['組合せ', 'dp'], io: '非負整数 n が与えられます。', ask: 'n を正整数の和で表す方法の数 (順序は区別しない) を出力してください。', h1: '硬貨DPと同じ形。', h2: '1..n を使って数え上げ。', ref: 'n=int(input())\ndp=[1]+[0]*n\nfor k in range(1,n+1):\n    for s in range(k,n+1):\n        dp[s]+=dp[s-k]\nprint(dp[n])', ins: ['4\n', '5\n', '1\n', '10\n', '0\n', '7\n'], tip: '💡 分割数は p(4)=5, p(10)=42。素朴には爆発するがDPで多項式時間。' })
+t({ lv: 130, concept: '組合せ: 重複組合せ', title: '重複組合せ', tags: ['組合せ'], io: '整数 n r が空白区切りで与えられます。', ask: 'n 種類から重複を許して r 個選ぶ組合せの数 H(n,r)=C(n+r-1,r) を出力してください。', h1: 'C(n+r-1, r)。', h2: 'math.comb。', ref: 'import math\nn,r=map(int,input().split())\nprint(math.comb(n+r-1,r))', ins: ['3 2\n', '5 3\n', '2 4\n', '4 0\n', '1 5\n', '6 2\n'] })
+
+export const CATALOG = TASKS
