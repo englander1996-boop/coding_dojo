@@ -264,3 +264,62 @@
 - [済C112] 上記50件。未採用候補: Kolakoski(既出)/Euler zigzag(既出)/Lazy caterer(既出:直線の領域数)/Polyominoes(n=1..7の固定/自由ポリオミノ数え上げ)/Jordan–Pólya数/Gould列(既出:奇数二項係数)/Cullen・Woodall数の判定/Superior highly composite/Colossally abundant/Alcuin(既出)/Practical(済)/Fortunate numbers/Giuga数/Thue–Morse(ビット偶奇で既出相当)/Regular paperfolding列/Baum–Sweet列/Gijswijt列/Carol数/Juggler列(平方根反復)/Highly totient/Euler数(交代順列既出)/Polite数(連続和で書ける=2べき以外)/Stella octangula/Home prime(素因数連結の反復)/Undulating(済)/Equidigital(済)/Pandigital(判定は既出?)
 - 名前つき素数: Balanced/Chen/Cousin/Cuban/Cullen/Delicate/Dihedral/Emirp(既出)/Euclid/Factorial/Fermat/Fibonacci prime/Good/Happy prime/Leyland/Long(既出:循環節最長)/Minimal/Palindromic wing/Pierpont/Proth/Pythagorean(4k+1)/Quartan/Repunit/Safe(既出)/Sexy/Sophie Germain(既出)/Stern/Super-prime/Thabit/Truncatable(既出)/Twin(既出)/Wieferich(2^(p−1)≡1 mod p²)/Wilson prime/Woodall
 - PE201〜250: Subsets with unique sum/Laserbeam/Squarefree binomial(済)/Generalised Hamming(済)/Dice game(確率→場合の数化)/Concealed square/Integer partition equations/Robot walks/Circular logic/Balanced numbers/Divisor square sum(σ2が平方数)/Combined volume of cuboids/Totient chains(φ反復の長さ:既出)/Crack-free walls/Primality of 2n²−1/Fibonacci words/Prime factorisation of binomial/Lattice points on circle(既出)/Semidivisible/Arithmetic geometric(既出)/Tours on 4×N/Odd triplets/Resilience(φ(d)/(d−1))/Sliders/Squares under hyperbola/Prime subset sums
+
+## 次バッチ C124 の設計メモ（2026-09-04 時点・未着手）
+
+対象は lv529〜578 の 49 段（**lv550 は既に 9 問あるので除外**）。方針はこれまでどおり「値・可否で止まっている既出を、実体・過程・逆変換に上げる」。
+下の一覧は既存 4875 問に対して concept 断片で grep 済み（衝突したものは差し替え後の案を記載）。
+
+- lv529 単調スタック: k桁削って最大の数（既出「k桁削って最小」の対）
+- lv530 バックトラック: 4×4数独を解く（既出は解の数・盤面検査）
+- lv531 文字列: 固定グリル暗号で暗号化（既出は復号。4×4 のグリルは回転4軌道から各1マス選ぶと妥当）
+- lv532 バックトラック: グリッドで単語をなぞる経路（既出は可否）
+- lv533 DP: 連続3分割で等和になる切れ目（既出は可否）
+- lv534 バックトラック: 演算子の挟み方を1つ（式を出力／既出は可否と種類数）
+- lv535 文字列: 交互01にする書き換え後の文字列（既出は最小変更数）
+- lv536 バックトラック: 騎士の周遊を1つ（Warnsdorff+バックトラック。入力は n r c、n≤5）
+- lv537 DP: 障害物を避ける経路を1つ（後ろ向き到達可能表→前から D 優先で辞書順最小）
+- lv538 数え上げ: 同じ文字が隣り合わない並びを1つ構成（ヒープ貪欲／既出は通り数）
+- lv539 数え上げ: 積への分解をすべて列挙（既出は分解の数）
+- lv540 DP: 階段の上り方をすべて列挙（既出は通り数）
+- lv541 再帰: 隣へしか動かせないハノイの手順（既出は手数。3^n−1 手）
+- lv542 数列: ホフスタッターのQ数列（既出は G 数列）
+- lv543 シミュレーション: コラッツ数列そのもの（既出は長さ）
+- lv544 数: 桁の積を繰り返す過程（既出は乗法的持続度＝回数）
+- lv545 bit演算: 全ペアのORの総和（既出は AND の総和）
+- lv546 DP: 1が連続しない2進列をすべて列挙（既出は個数）
+- lv547 数列: シルベスター数列の逆数和（既約分数）※パドヴァン数は既出なので不可
+- lv548 パース: 入れ子リストの深さごとの合計（既出は平坦化）
+- lv549 組合せ: パスカルの三角形をn行すべて出力（既出は第n行のみ）
+- lv551 貪欲: 線分を覆う区間を実際に選ぶ（既出は本数）
+- lv552 ヒープ: 給油するスタンドの位置（既出は回数）
+- lv553 貪欲: ジョンソン法の処理順（既出は完了時刻）
+- lv554 数学: n個の並列抵抗の合成（既出は2個）
+- lv555 貪欲: 最大遅延を最小にする処理順（EDF／既出は遅延の値）
+- lv556 貪欲: 一周できる開始地点をすべて（既出は1つ）
+- lv557 文字列: RGBをカラーコードへ（既出は逆方向）
+- lv558 文字列: 段落の両端揃え（複数行／既出は1行）
+- lv559 貪欲: 間隔d以上で座る席の番号（既出は人数）
+- lv560 貪欲: 最小ジャンプ数の経路（既出は回数）
+- lv561 グラフ: 二部グラフになっている成分の数（既出は星形・一本道の成分数）
+- lv562 BFS: 単語はしごの経路（既出は手数）
+- lv563 BFS: 迷路の最短経路の道順（既出は歩数と本数）
+- lv564 ダイクストラ: 最短経路木の親の一覧 ※「最短路が一意かの判定」は既出なので不可
+- lv565 BFS: 火が回る前に脱出する経路（既出は可否。火を多始点BFSしてから dist<fire で歩く）
+- lv566 グラフ: 2チーム分けで人数差最小の分け方（既出は差の値。成分ごとの反転を全探索）
+- lv567 グラフ: 無向グラフの閉路を1つ（既出は有無。既出の「有向閉路1つ」の無向版）
+- lv568 文字列: 数を英語で綴る（既出は文字数。British 式で and を入れる旨を明記）
+- lv569 グラフ: 逆走を最小にする経路（0-1 BFS + 親／既出は本数）
+- lv570 BFS: 最も遠いマスの座標（既出は距離）
+- lv571 グラフ: 到達可能な頂点をすべて（既出は個数）
+- lv572 文字列: 独自アルファベット順で並べ替える（既出はソート済みかの検査）
+- lv573 木: 毛虫木の背骨を出力（既出は判定。葉を全部むしった残り、空なら全頂点）
+- lv574 木: 重い子の一覧（HLD の部品／既出は部分木サイズ和）
+- lv575 グラフ: 二重連結成分の頂点一覧 ※「二重連結成分の数」は既出なので実体で差別化
+- lv576 グラフ: 最短路に使われる辺をすべて（既出は辺集合のサイズ）
+- lv577 木: オイラーツアーの in/out 区間（既出は行き掛け順・完全な列）
+- lv578 グリッド: 領域ごとに番号を振った盤面（既出は領域数。※サイズ降順は C119 で既出）
+
+**設計時に衝突して差し替えた案（再提案しないこと）**: 数列パドヴァン数（既出）／ダイクストラ最短路の一意性判定（既出）／グラフ二重連結成分の数（既出、実体に変更）／ヨセフスの脱落順（既出）／ピッグラテンの復号（復号が一意に決まらない）／立方根（ニュートン法立方根が既出）／3分の1超の要素（既出）／クラメルの公式（既出）。
+
+**次にやること**: この一覧どおり `scripts/catalog-tasks124.mjs` を書く → generate.mjs に2行追加 → 生成 → 6ゲート → HANDOFF 更新（`scratchpad/happend.py` が使える）→ コミット。
