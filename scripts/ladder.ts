@@ -60,7 +60,7 @@ const pairs: { code: string; input: string }[] = []
 for (const s of specs) for (const inp of s.ins) pairs.push({ code: s.op.ref, input: inp })
 console.log(`filling ${emptyLevels.length} empty levels (of ${MAX_LEVEL}); evaluating ${pairs.length} cases...`)
 const outputs: string[] = JSON.parse(
-  execFileSync(process.env.PYTHON ?? (spawnSync('py', ['-V']).status === 0 ? 'py' : 'python'), [join(__dirname, 'eval_batch.py')], { input: JSON.stringify(pairs), encoding: 'utf8', maxBuffer: 1 << 30 }),
+  execFileSync(process.env.PYTHON ?? (spawnSync('py', ['-V']).status === 0 ? 'py' : 'python'), [join(__dirname, 'eval_batch.py')], { input: JSON.stringify(pairs).replace(/[^\x20-\x7E]/g, (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0')), encoding: 'utf8', maxBuffer: 1 << 30 }),
 )
 
 const problems: any[] = []

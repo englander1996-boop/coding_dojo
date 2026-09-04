@@ -33,7 +33,7 @@ for (const p of ALL_PROBLEMS) {
 // Python コマンド解決: PYTHON 環境変数 > py ランチャー > python
 const PY = process.env.PYTHON ?? (spawnSync('py', ['-V']).status === 0 ? 'py' : 'python')
 const outJson = execFileSync(PY, [join(__dirname, 'eval_batch.py')], {
-  input: JSON.stringify(pairs),
+  input: JSON.stringify(pairs).replace(/[^\x20-\x7E]/g, (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0')),
   encoding: 'utf8',
   maxBuffer: 1 << 30,
 })

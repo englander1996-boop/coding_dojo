@@ -130,8 +130,9 @@ import { CATALOG as C117 } from './catalog-tasks117.mjs'
 import { CATALOG as C118 } from './catalog-tasks118.mjs'
 import { CATALOG as C119 } from './catalog-tasks119.mjs'
 import { CATALOG as C120 } from './catalog-tasks120.mjs'
+import { CATALOG as C121 } from './catalog-tasks121.mjs'
 
-const CATALOG = [...C1, ...C2, ...C3, ...C4, ...C5, ...C6, ...C7, ...C8, ...C9, ...C10, ...C11, ...C12, ...C13, ...C14, ...C15, ...C16, ...C17, ...C18, ...C19, ...C20, ...C21, ...C22, ...C23, ...C24, ...C25, ...C26, ...C27, ...C28, ...C29, ...C30, ...C31, ...C32, ...C33, ...C34, ...C35, ...C36, ...C37, ...C38, ...C39, ...C40, ...C41, ...C42, ...C43, ...C44, ...C45, ...C46, ...C47, ...C48, ...C49, ...C50, ...C51, ...C52, ...C53, ...C54, ...C55, ...C56, ...C57, ...C58, ...C59, ...C60, ...C61, ...C62, ...C63, ...C64, ...C65, ...C66, ...C67, ...C68, ...C69, ...C70, ...C71, ...C72, ...C73, ...C74, ...C75, ...C76, ...C77, ...C78, ...C79, ...C80, ...C81, ...C82, ...C83, ...C84, ...C85, ...C86, ...C87, ...C88, ...C89, ...C90, ...C91, ...C92, ...C93, ...C94, ...C95, ...C96, ...C97, ...C98, ...C99, ...C100, ...C101, ...C102, ...C103, ...C104, ...C105, ...C106, ...C107, ...C108, ...C109, ...C110, ...C111, ...C112, ...C113, ...C114, ...C115, ...C116, ...C117, ...C118, ...C119, ...C120]
+const CATALOG = [...C1, ...C2, ...C3, ...C4, ...C5, ...C6, ...C7, ...C8, ...C9, ...C10, ...C11, ...C12, ...C13, ...C14, ...C15, ...C16, ...C17, ...C18, ...C19, ...C20, ...C21, ...C22, ...C23, ...C24, ...C25, ...C26, ...C27, ...C28, ...C29, ...C30, ...C31, ...C32, ...C33, ...C34, ...C35, ...C36, ...C37, ...C38, ...C39, ...C40, ...C41, ...C42, ...C43, ...C44, ...C45, ...C46, ...C47, ...C48, ...C49, ...C50, ...C51, ...C52, ...C53, ...C54, ...C55, ...C56, ...C57, ...C58, ...C59, ...C60, ...C61, ...C62, ...C63, ...C64, ...C65, ...C66, ...C67, ...C68, ...C69, ...C70, ...C71, ...C72, ...C73, ...C74, ...C75, ...C76, ...C77, ...C78, ...C79, ...C80, ...C81, ...C82, ...C83, ...C84, ...C85, ...C86, ...C87, ...C88, ...C89, ...C90, ...C91, ...C92, ...C93, ...C94, ...C95, ...C96, ...C97, ...C98, ...C99, ...C100, ...C101, ...C102, ...C103, ...C104, ...C105, ...C106, ...C107, ...C108, ...C109, ...C110, ...C111, ...C112, ...C113, ...C114, ...C115, ...C116, ...C117, ...C118, ...C119, ...C120, ...C121]
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -195,7 +196,9 @@ console.log(`expanding ${CATALOG.length} tasks -> ${specs.length} problems; eval
 // Python コマンド解決: PYTHON 環境変数 > py ランチャー > python
 const PY = process.env.PYTHON ?? (spawnSync('py', ['-V']).status === 0 ? 'py' : 'python')
 const outJson = execFileSync(PY, [join(__dirname, 'eval_batch.py')], {
-  input: JSON.stringify(pairs),
+  // Python 側が非UTF-8ロケールで stdin を復号しても壊れないよう、payload を ASCII のみにする
+  // (cp932 などでは日本語のバイト列が直後の \ を巻き込み、JSON の \n エスケープが失われる)
+  input: JSON.stringify(pairs).replace(/[^\x20-\x7E]/g, (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0')),
   encoding: 'utf8',
   maxBuffer: 1 << 30,
 })
