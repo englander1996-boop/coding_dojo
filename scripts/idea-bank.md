@@ -212,7 +212,7 @@
 - [済C108] 1を一箇所に固める最小交換数(任意交換) / [済C108] どの文字もk回以上の最長部分文字列(分割統治)
 - 3文字a,b,cを全部含む部分文字列の数 / 最頻要素の頻度をk回の+1で最大化 / 長さkの相異なる要素の窓の最大和 / 店主が機嫌よくいられるX分で満足客最大
 - 母音が偶数回の最長部分文字列(マスクの初出) / 2文字だけ違うペアの部分文字列数 / 半反復(隣接同一が1組まで)の最長部分文字列
-- 最短の削除で整列にする区間(前後の単調部分を二点法で) / 三角形になれる3本の数(二点法版)
+- [済C109] 最短の削除で整列にする区間(前後の単調部分を二点法で) / 三角形になれる3本の数(二点法版)
 ### DP
 - [済C108] 連続1なしのN以下の整数の個数(ビット桁DP) / [済C108] 増加経路の本数 / [済C108] 連続上限つきサイコロ列 / [済C108] 等差部分列(飛び飛び)の個数
 - [済C108] 跳び幅[min,max]で0だけ踏む到達判定 / [済C108] 長さL,Mの2区間最大和 / [済C108] 分割して小さい方を得るゲーム / [済C108] 葉の値から作る木の最小コスト
@@ -224,12 +224,12 @@
 ### ハッシュ・数え上げ
 - [済C108] rev差が等しいペア / [済C108] a[i]−iで悪いペア / [済C108] 最頻値を同じ回数含む最短区間 / [済C108] ドメイン階層集計 / [済C108] 2列の区間和が等しい最長区間
 - [済C108] XORが等しく分かれる(i,j,k) / [済C108] 全ペアXORの総和 / [済C108] LCM=kの区間数 / [済C108] 差の上限つき3つ組 / [済C108] 四隅が1の長方形 / [済C108] 3×3魔方陣の部分格子
-- 同じ比の長方形ペア数 / 積が等しい4つ組(タプル) / 隣接差1の最長部分列(調和部分列 max−min=1) / レンガ壁の最少横断本数 / ブーメラン(等距離ペア)の数
+- 同じ比の長方形ペア数 / 積が等しい4つ組(タプル) / [済C109]隣接差1の最長部分列(調和部分列 max−min=1) / レンガ壁の最少横断本数 / ブーメラン(等距離ペア)の数
 - 直線に関して対称な点集合か / 最小面積の軸平行長方形 / 3つ組のANDが0の数 / 和が目標の部分行列の数 / 部分配列の中央値がkの数
 - 奇数長部分配列の和の総和 / ちょうど1回だけ覆われた… / 部分配列の最大値がちょうどk回以上現れる数 / 最小=minK かつ 最大=maxK の区間数
 ### スタック・単調スタック
 - [済C108] 最小値×区間和の最大 / [済C108] 括弧内を反転して括弧を消す
-- 好成績が多い最長区間(+1/−1で和>0の最長) / 最大幅の坂(i<jでa[i]≤a[j]のj−i最大) / 列で見える人数 / 部分配列の最小値の総和(既出)の変形: 各要素が最大となる区間数
+- [済C109:最大幅の坂/見える人数/両端最大区間] 好成績が多い最長区間(+1/−1で和>0の最長) / 最大幅の坂(i<jでa[i]≤a[j]のj−i最大) / 列で見える人数 / 部分配列の最小値の総和(既出)の変形: 各要素が最大となる区間数
 - 基本計算機(+−と括弧) / 三項演算子の評価 / 化学式の原子数 / 波括弧展開 / 関数の排他実行時間ログ / ロボットの衝突 / 半減少部分配列の最長
 ### ヒープ・ソート
 - [済C108] k番目の分数 / [済C108] 単一CPUの実行順 / [済C108] 順位票ソート / [済C108] ペアの小さい方の和最大 / [済C108] k枚連番の組分け / [済C108] 2個買うと1個無料
@@ -250,3 +250,7 @@
 - 二分木の最大幅 / 完全二分木かの判定(完全性) / 木のジグザグ順(既出) / 部分木の分割で積最大 / 同じ深さで最後の頂点 / BSTの最頻値 / 最も近い葉 / 距離kの全頂点 / 木の直径(二分木版) / 一意な値のパス最長 / ラベル付き二分木のパス / 削除クエリ後の高さ
 ### 出典メモ
 - 面接定番パターン集(カテゴリ別問題名リスト) / Project Euler 51〜150(Lychrel・Permuted Multiples・Cyclical Figurate・Digit Factorial Chains・Passcode Derivation・Cube Digit Pairs・Anagramic Squares・Bouncy Numbers・Counting Block Combinations・Primes with Runs・Repunit Divisibility・Reversible Numbers・Square Remainders 等が未収録候補)
+
+## 第5次探索(2026-09-04: CSES全節リスト差分)
+- [済C109] Hotel Queries / List Removals / Range Updates and Sums / Salary Queries / Apartments / Concert Tickets / Reading Books / Bit Inversions / Cut and Paste / Collecting Numbers / Distinct Colors / Distinct Values Sum / Shortest Subsequence / Sum of Four Values / Visible Buildings Queries / Maximum Subarray Sum II
+- 未採用: Collecting Numbers II(スワップつき) / Towers(=最長非減少部分列と同計算・不可) / Nested Ranges Count(含む数の一覧) / Pizzeria Queries / Prefix Sum Queries(更新つき最大接頭辞) / Range Interval Queries / Increasing Array Queries / Polynomial Queries(既出) / Missing Coin Sum Queries / Subarray Sum Queries II / Pyramid Array / Stack Weights / Two Stacks Sorting / Sorting Methods(各ソートの手数) / Nearest Campsites / Bubble Sort Rounds / Grid Coloring / Mex Grid Construction / Coin Grid / Letter Pair Move Game / Swap Round Sorting / Binary Subsequences / Food Division / Programmers and Artists / Coin Arrangement / Stick Divisions / Stick Difference / Tree Distances I(既出:離心数) / Fixed-Length Paths(既出:距離k対) / Counting Paths(木パスの通過回数) / Company Queries II(LCA既出) / Path Queries II(パス最大 既出) / Substring Order / Palindrome Queries(更新つき回文判定) / Required Substring / String Transform(BWT逆変換!) / Lines and Queries / Line Segments Trace / Intersection Points / Robot Path / Corner Subgrid / Eulerian Subgraphs / Monster Game / Subarray Squares / Houses and Schools / Apples and Bananas / One Bit Positions / Signal Processing
