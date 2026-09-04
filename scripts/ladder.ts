@@ -2,7 +2,7 @@
 // 目的は「全段に最低1問」を保証すること(一旦のスキャフォールド)。
 // 14種の基礎演算をレベルでローテーションし、入力もレベルで変える。期待値は Python 一括実行で確定。
 // 出力: src/data/problems/ladder.ts （ladderProblems を書き出す）
-import { execFileSync } from 'node:child_process'
+import { execFileSync, spawnSync } from 'node:child_process'
 import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
@@ -60,7 +60,7 @@ const pairs: { code: string; input: string }[] = []
 for (const s of specs) for (const inp of s.ins) pairs.push({ code: s.op.ref, input: inp })
 console.log(`filling ${emptyLevels.length} empty levels (of ${MAX_LEVEL}); evaluating ${pairs.length} cases...`)
 const outputs: string[] = JSON.parse(
-  execFileSync('py', [join(__dirname, 'eval_batch.py')], { input: JSON.stringify(pairs), encoding: 'utf8', maxBuffer: 1 << 30 }),
+  execFileSync(process.env.PYTHON ?? (spawnSync('py', ['-V']).status === 0 ? 'py' : 'python'), [join(__dirname, 'eval_batch.py')], { input: JSON.stringify(pairs), encoding: 'utf8', maxBuffer: 1 << 30 }),
 )
 
 const problems: any[] = []

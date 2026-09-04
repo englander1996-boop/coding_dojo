@@ -2,7 +2,7 @@
 // the real `py` interpreter. To scale to tens of thousands of problems, all
 // (reference, input) pairs are run in ONE Python process (scripts/eval_batch.py)
 // instead of spawning `py` per case.
-import { execFileSync } from 'node:child_process'
+import { execFileSync, spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { ALL_PROBLEMS } from '../src/data/index.ts'
@@ -30,7 +30,9 @@ for (const p of ALL_PROBLEMS) {
   }
 }
 
-const outJson = execFileSync('py', [join(__dirname, 'eval_batch.py')], {
+// Python コマンド解決: PYTHON 環境変数 > py ランチャー > python
+const PY = process.env.PYTHON ?? (spawnSync('py', ['-V']).status === 0 ? 'py' : 'python')
+const outJson = execFileSync(PY, [join(__dirname, 'eval_batch.py')], {
   input: JSON.stringify(pairs),
   encoding: 'utf8',
   maxBuffer: 1 << 30,

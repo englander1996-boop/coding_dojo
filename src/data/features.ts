@@ -145,7 +145,6 @@ export const FEATURES: Feature[] = [
   { key: 'ML 評価指標 (accuracy/MSE)', category: 'データ分析', pattern: /accuracy_score|mean_squared_error/ },
   { key: 'StandardScaler / 前処理', category: 'データ分析', pattern: /StandardScaler|preprocessing/ },
   { key: '線形回帰 / KNN', category: 'データ分析', pattern: /LinearRegression|KNeighbors/ },
-  { key: 'optuna 最適化（サーバー）', category: 'データ分析', pattern: /optuna/ },
   { key: 'pandas merge（結合）', category: 'データ分析', pattern: /merge\(/ },
   { key: 'fillna（欠損処理）', category: 'データ分析', pattern: /fillna/ },
   { key: 'one-hot (get_dummies)', category: 'データ分析', pattern: /get_dummies/ },

@@ -179,25 +179,22 @@ scikit-learn は Python の機械学習の定番ライブラリ。多くのモ�
   },
   {
     level: 160,
-    title: 'ハイパーパラメータ最適化 (optuna)',
-    description: 'GridSampler で最小化/最大化（サーバー実行）',
+    title: 'ハイパーパラメータ最適化 (グリッドサーチ)',
+    description: '候補の総当たりで目的関数を最小化/最大化',
     theory: `【この帯で学ぶ理論：ハイパーパラメータ最適化】
 
 機械学習モデルには「学習率・木の深さ・正則化の強さ」など、人が決める設定(ハイパーパラメータ)がある。これを自動で良い値に探すのが最適化。
 
-■ optuna の基本
-  1. 目的関数 objective(trial) を書く。trial.suggest_int / suggest_float で探索したい値を宣言。
-  2. study = create_study(direction="minimize" or "maximize")
-  3. study.optimize(objective, n_trials=...) で探索。
-  4. study.best_params / study.best_value で最良の結果を取得。
+■ グリッドサーチ(総当たり)
+  1. 目的関数 f(パラメータ) を決める(小さいほど良い、など)。
+  2. 各パラメータの候補値リストを用意する。
+  3. 全組合せを試して最良(argmin / argmax)を記録する。
+  4. 同点の扱い(最小の候補を採る等)を決めておくと結果が一意になる。
 
-■ サンプラー
-  ・TPESampler(既定): ベイズ的に賢く探すが確率的。再現には seed が要る。
-  ・GridSampler: グリッドを総当たり。決定的(=この帯で採点に使う)。
-
-■ なぜサーバー実行か
-optuna はブラウザ(Pyodide)に無く計算も重いので、ローカル判定サーバー(npm run server)で実行する。
-※ さらに進んだ botorch(ベイズ最適化×PyTorch)は torch が要るため、Docker等のサーバー環境が前提。`,
+■ その先(発展)
+  ・ランダムサーチ: 候補が多いとき一様サンプリングで近似する。
+  ・ベイズ最適化(optuna 等): 過去の試行から有望な領域を賢く選ぶ。確率的なので再現には seed が要る。
+※ optuna や botorch は計算が重くブラウザ(Pyodide)では動かないため、サーバー実行を整備したら導入する将来課題。`,
   },
   {
     level: 115,
