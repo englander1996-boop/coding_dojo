@@ -265,7 +265,7 @@
 - 名前つき素数: Balanced/Chen/Cousin/Cuban/Cullen/Delicate/Dihedral/Emirp(既出)/Euclid/Factorial/Fermat/Fibonacci prime/Good/Happy prime/Leyland/Long(既出:循環節最長)/Minimal/Palindromic wing/Pierpont/Proth/Pythagorean(4k+1)/Quartan/Repunit/Safe(既出)/Sexy/Sophie Germain(既出)/Stern/Super-prime/Thabit/Truncatable(既出)/Twin(既出)/Wieferich(2^(p−1)≡1 mod p²)/Wilson prime/Woodall
 - PE201〜250: Subsets with unique sum/Laserbeam/Squarefree binomial(済)/Generalised Hamming(済)/Dice game(確率→場合の数化)/Concealed square/Integer partition equations/Robot walks/Circular logic/Balanced numbers/Divisor square sum(σ2が平方数)/Combined volume of cuboids/Totient chains(φ反復の長さ:既出)/Crack-free walls/Primality of 2n²−1/Fibonacci words/Prime factorisation of binomial/Lattice points on circle(既出)/Semidivisible/Arithmetic geometric(既出)/Tours on 4×N/Odd triplets/Resilience(φ(d)/(d−1))/Sliders/Squares under hyperbola/Prime subset sums
 
-## 次バッチ C124 の設計メモ（2026-09-04 時点・未着手）
+## [済C124] バッチ C124 の設計メモ（2026-09-04 設計 / 2026-09-05 実施済み）
 
 対象は lv529〜578 の 49 段（**lv550 は既に 9 問あるので除外**）。方針はこれまでどおり「値・可否で止まっている既出を、実体・過程・逆変換に上げる」。
 下の一覧は既存 4875 問に対して concept 断片で grep 済み（衝突したものは差し替え後の案を記載）。
@@ -323,3 +323,27 @@
 **設計時に衝突して差し替えた案（再提案しないこと）**: 数列パドヴァン数（既出）／ダイクストラ最短路の一意性判定（既出）／グラフ二重連結成分の数（既出、実体に変更）／ヨセフスの脱落順（既出）／ピッグラテンの復号（復号が一意に決まらない）／立方根（ニュートン法立方根が既出）／3分の1超の要素（既出）／クラメルの公式（既出）。
 
 **次にやること**: この一覧どおり `scripts/catalog-tasks124.mjs` を書く → generate.mjs に2行追加 → 生成 → 6ゲート → HANDOFF 更新（`py scripts/handoff-append.py` が使える）→ コミット。
+
+### C124 実施結果（2026-09-05）
+
+上の49案を**着手前に独立再検証したところ6案が衝突**していた。設計メモの「grep済み」を鵜呑みにしないこと。
+
+**完全衝突（既出とまったく同じ計算。再提案しないこと）**
+- lv545 全ペアのORの総和 → lv854「bit演算: 全ペアORの総和」が既出（設計メモは「既出はANDの総和」と書いていたがORも既出だった）
+- lv542 ホフスタッターのQ数列 → lv956「数列: ホフスタッターのQ数列」が既出（設計メモは「既出はG数列」）
+- lv560 最小ジャンプ数の経路 → lv217「DP: 最小ジャンプの経路を辞書順最小で」が既出
+- lv537 障害物を避ける経路を1つ → 「DP: 障害物を避ける辞書順最小の道順」が既出
+
+**出題パターンの重複（水増し寄りなので差し替え）**
+- lv549 パスカルの三角形をn行すべて → 同レベルに「第n行」があり、印字ループが増えるだけ
+- lv561 二部グラフになっている成分の数 → 同レベルに「クリーク成分の数」「星形成分の数」「一本道成分の数」が既に3問。同じ形の数え上げが4つ並ぶ
+
+**差し替え後（採用した案）**
+- lv545 ビット別の個数から総和とXORを復元（lv853「ビットごとの人数の一覧」の逆変換）
+- lv542 ホフスタッターの女性・男性数列（相互再帰。G数列は単一再帰なので別物）
+- lv560 最小ジャンプの各段の到達限界（貪欲の内部状態を出す部品問題）
+- lv537 各マスを通る経路の本数の表（前からの経路数と後ろからの経路数の積）
+- lv549 二項係数の値から位置を逆引き（値→位置の逆変換）
+- lv561 全体を連結にする追加辺の一覧（無向・実体化。lv646の強連結化は有向で本数のみなので別）
+
+**次バッチ C125 の対象**: lv579〜（5問未満は418段）。設計時は上の6件を再提案しないこと。
