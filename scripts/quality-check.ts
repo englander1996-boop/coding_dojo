@@ -13,6 +13,7 @@ import { ALL_PROBLEMS } from '../src/data/index.ts'
 type P = (typeof ALL_PROBLEMS)[number]
 
 const strict = process.argv.includes('--strict')
+const showAll = process.argv.includes('--all') // 各種別の一覧を省略せず全部出す
 
 type Finding = { sev: 'high' | 'medium' | 'low'; kind: string; detail: string }
 const findings: Finding[] = []
@@ -98,8 +99,9 @@ for (const f of findings) (byKind.get(f.kind) ?? byKind.set(f.kind, []).get(f.ki
 console.log(`=== 品質検査: ${ALL_PROBLEMS.length}問 ===`)
 for (const [kind, fs] of [...byKind].sort((a, b) => order[a[1][0].sev] - order[b[1][0].sev])) {
   console.log(`\n[${fs[0].sev}] ${kind}: ${fs.length}件`)
-  for (const f of fs.slice(0, 12)) console.log('  ' + f.detail)
-  if (fs.length > 12) console.log(`  ... 他 ${fs.length - 12}件`)
+  const limit = showAll ? fs.length : 12
+  for (const f of fs.slice(0, limit)) console.log('  ' + f.detail)
+  if (fs.length > limit) console.log(`  ... 他 ${fs.length - limit}件`)
 }
 const high = findings.filter((f) => f.sev === 'high').length
 const med = findings.filter((f) => f.sev === 'medium').length
