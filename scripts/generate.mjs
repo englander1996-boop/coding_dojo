@@ -134,8 +134,9 @@ import { CATALOG as C121 } from './catalog-tasks121.mjs'
 import { CATALOG as C122 } from './catalog-tasks122.mjs'
 import { CATALOG as C123 } from './catalog-tasks123.mjs'
 import { CATALOG as C124 } from './catalog-tasks124.mjs'
+import { CATALOG as C125 } from './catalog-tasks125.mjs'
 
-const CATALOG = [...C1, ...C2, ...C3, ...C4, ...C5, ...C6, ...C7, ...C8, ...C9, ...C10, ...C11, ...C12, ...C13, ...C14, ...C15, ...C16, ...C17, ...C18, ...C19, ...C20, ...C21, ...C22, ...C23, ...C24, ...C25, ...C26, ...C27, ...C28, ...C29, ...C30, ...C31, ...C32, ...C33, ...C34, ...C35, ...C36, ...C37, ...C38, ...C39, ...C40, ...C41, ...C42, ...C43, ...C44, ...C45, ...C46, ...C47, ...C48, ...C49, ...C50, ...C51, ...C52, ...C53, ...C54, ...C55, ...C56, ...C57, ...C58, ...C59, ...C60, ...C61, ...C62, ...C63, ...C64, ...C65, ...C66, ...C67, ...C68, ...C69, ...C70, ...C71, ...C72, ...C73, ...C74, ...C75, ...C76, ...C77, ...C78, ...C79, ...C80, ...C81, ...C82, ...C83, ...C84, ...C85, ...C86, ...C87, ...C88, ...C89, ...C90, ...C91, ...C92, ...C93, ...C94, ...C95, ...C96, ...C97, ...C98, ...C99, ...C100, ...C101, ...C102, ...C103, ...C104, ...C105, ...C106, ...C107, ...C108, ...C109, ...C110, ...C111, ...C112, ...C113, ...C114, ...C115, ...C116, ...C117, ...C118, ...C119, ...C120, ...C121, ...C122, ...C123, ...C124]
+const CATALOG = [...C1, ...C2, ...C3, ...C4, ...C5, ...C6, ...C7, ...C8, ...C9, ...C10, ...C11, ...C12, ...C13, ...C14, ...C15, ...C16, ...C17, ...C18, ...C19, ...C20, ...C21, ...C22, ...C23, ...C24, ...C25, ...C26, ...C27, ...C28, ...C29, ...C30, ...C31, ...C32, ...C33, ...C34, ...C35, ...C36, ...C37, ...C38, ...C39, ...C40, ...C41, ...C42, ...C43, ...C44, ...C45, ...C46, ...C47, ...C48, ...C49, ...C50, ...C51, ...C52, ...C53, ...C54, ...C55, ...C56, ...C57, ...C58, ...C59, ...C60, ...C61, ...C62, ...C63, ...C64, ...C65, ...C66, ...C67, ...C68, ...C69, ...C70, ...C71, ...C72, ...C73, ...C74, ...C75, ...C76, ...C77, ...C78, ...C79, ...C80, ...C81, ...C82, ...C83, ...C84, ...C85, ...C86, ...C87, ...C88, ...C89, ...C90, ...C91, ...C92, ...C93, ...C94, ...C95, ...C96, ...C97, ...C98, ...C99, ...C100, ...C101, ...C102, ...C103, ...C104, ...C105, ...C106, ...C107, ...C108, ...C109, ...C110, ...C111, ...C112, ...C113, ...C114, ...C115, ...C116, ...C117, ...C118, ...C119, ...C120, ...C121, ...C122, ...C123, ...C124, ...C125]
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -176,18 +177,29 @@ for (const t of CATALOG) {
 {
   const byRef = new Map()
   const byConcept = new Map()
+  const byTitle = new Map()
   const dups = []
+  const titleWarn = []
   for (const s of specs) {
     const rk = normalize(s.reference)
     if (byRef.has(rk)) dups.push(`同一の参照解: "${s.title}" と "${byRef.get(rk)}"`)
     else byRef.set(rk, s.title)
     if (byConcept.has(s.concept)) dups.push(`同一の概念名: "${s.title}" と "${byConcept.get(s.concept)}" (concept=${s.concept})`)
     else byConcept.set(s.concept, s.title)
+    const prevLv = byTitle.get(s.title)
+    if (prevLv === undefined) byTitle.set(s.title, s.lv)
+    else if (prevLv === s.lv) dups.push(`同一レベルに同じタイトル: "${s.title}" (lv${s.lv})`)
+    else titleWarn.push(`"${s.title}" lv${prevLv} と lv${s.lv}`)
   }
   if (dups.length) {
     console.error(`\n重複を検出 (${dups.length}):`)
     for (const d of dups.slice(0, 40)) console.error('  ' + d)
     process.exit(1)
+  }
+  if (titleWarn.length) {
+    console.warn(`\n[警告] レベルをまたぐ同名タイトル ${titleWarn.length} 組(同じ計算の重複でないか要確認):`)
+    for (const w of titleWarn.slice(0, 20)) console.warn('  ' + w)
+    if (titleWarn.length > 20) console.warn(`  ... 他 ${titleWarn.length - 20} 組`)
   }
 }
 
@@ -210,6 +222,7 @@ const outputs = JSON.parse(outJson)
 // ---- attach expected, detect errors, build final Problem[] ----
 const problems = []
 const errors = []
+const constWarn = []
 let k = 0
 const indexByLevel = new Map()
 for (const s of specs) {
@@ -223,6 +236,10 @@ for (const s of specs) {
     cases.push({ input: s.ins[i], expected: normalize(got), sample: i === 0 })
   }
   if (cases.length === 0) continue
+  // 全ケースの期待値が同一だと、定数を出力するだけの解答で全部通ってしまう
+  if (cases.length >= 3 && new Set(cases.map((c) => c.expected)).size === 1) {
+    constWarn.push(`lv${s.lv} "${s.title}" — ${cases.length}件すべて ${JSON.stringify(cases[0].expected).slice(0, 30)}`)
+  }
   const idx = (indexByLevel.get(s.lv) ?? 0) + 1
   indexByLevel.set(s.lv, idx)
   problems.push({
@@ -246,6 +263,11 @@ if (errors.length) {
   console.error(`\n${errors.length} reference solution error(s):`)
   for (const e of errors.slice(0, 50)) console.error('  ' + e)
   process.exit(1)
+}
+
+if (constWarn.length) {
+  console.warn(`\n[警告] 全ケースの期待値が同一の問題 ${constWarn.length} 件(定数を出力するだけで通ってしまう):`)
+  for (const w of constWarn) console.warn('  ' + w)
 }
 
 const json = JSON.stringify(problems)

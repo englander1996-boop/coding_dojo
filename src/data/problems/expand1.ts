@@ -303,19 +303,19 @@ const lv007 = build(7, 'lv007x', [
 // ===== lv008 while ループ：whileの活用 =====
 const lv008 = build(8, 'lv008x', [
   {
-    title: '各桁の和',
+    title: '割り算だけで桁をばらす',
     concept: 'whileで桁を処理',
     tags: ['while', 'ループ'],
     statement:
-      '非負整数 N が与えられます。各桁の数字の合計を出力してください。\n\n入力例:\n1234\n\n出力例:\n10',
+      '非負整数 N が与えられます。N を文字列に変換せず、10で割った余りと商だけを使って各桁の数字を1つずつ取り出し、その合計を出力してください。\n\n入力例:\n1234\n\n出力例:\n10',
     starter: 'n = int(input())\n',
     hints: [
-      'n % 10 で一の位、n // 10 で一の位を落とせます。',
-      'n が 0 になるまで while で繰り返します。',
+      'n % 10 で一の位が取れ、n // 10 でその一の位を落とせます。',
+      '取り出しては削るを、n が 0 になるまで while で繰り返します。',
       '答え:\nn = int(input())\ns = 0\nwhile n > 0:\n    s += n % 10\n    n //= 10\nprint(s)',
     ],
     explanation:
-      '「% 10 で末尾を取り出し // 10 で削る」は桁処理の基本パターン。\n\n模範解答:\nn = int(input())\ns = 0\nwhile n > 0:\n    s += n % 10\n    n //= 10\nprint(s)',
+      '「% 10 で末尾を取り出し // 10 で削る」は桁処理の基本パターン。str(n) に頼らず数のまま扱えるので、桁の並べ替えや基数の変換にもそのまま応用できる。\n\n模範解答:\nn = int(input())\ns = 0\nwhile n > 0:\n    s += n % 10\n    n //= 10\nprint(s)',
     reference: 'n = int(input())\ns = 0\nwhile n > 0:\n    s += n % 10\n    n //= 10\nprint(s)',
     cases: [
       { input: '1234\n', expected: '10', sample: true },
@@ -326,27 +326,28 @@ const lv008 = build(8, 'lv008x', [
     tip: '💡 % 10 と // 10 のセットで、整数を1桁ずつ分解できる。',
   },
   {
-    title: 'コラッツの手数',
-    concept: 'whileで桁を処理',
-    tags: ['while', 'ループ', '条件分岐'],
+    title: '0 が来たら終わり',
+    concept: 'while: 終わりの合図で止める',
+    tags: ['while', 'break', '入力'],
     statement:
-      '正の整数 N が与えられます。「偶数なら2で割る、奇数なら3倍して1を足す」を N が 1 になるまで繰り返したときの操作回数を出力してください。\n\n入力例:\n6\n\n出力例:\n8',
-    starter: 'n = int(input())\n',
+      '整数が1行に1つずつ与えられます。0 が現れたらそこで読み込みをやめ、それまでに読んだ整数の合計を出力してください。0 自身は合計に含めません。\n\n入力例:\n3\n5\n0\n\n出力例:\n8',
+    starter: 'total = 0\n',
     hints: [
-      'n == 1 になるまで while で回し、回数を数えます。',
-      '偶数判定は n % 2 == 0。',
-      '答え:\nn = int(input())\nc = 0\nwhile n != 1:\n    if n % 2 == 0:\n        n //= 2\n    else:\n        n = 3 * n + 1\n    c += 1\nprint(c)',
+      '何行来るか分からないので、回数を決めずに while True で回します。',
+      '読んだ値が 0 だったら break でループを抜けます。',
+      '答え:\ntotal = 0\nwhile True:\n    x = int(input())\n    if x == 0:\n        break\n    total += x\nprint(total)',
     ],
     explanation:
-      'コラッツ予想の操作。終了条件を while の条件に置き、ループ内で状態を更新する。\n\n模範解答:\nn = int(input())\nc = 0\nwhile n != 1:\n    if n % 2 == 0:\n        n //= 2\n    else:\n        n = 3 * n + 1\n    c += 1\nprint(c)',
+      '「終わりの合図の値が来るまで読み続ける」形。繰り返す回数が事前に決まらないループは while True で書き、抜ける条件が満たされた瞬間に break する。合図の値そのものは処理しないので、足す前に判定を置くのがポイント。\n\n模範解答:\ntotal = 0\nwhile True:\n    x = int(input())\n    if x == 0:\n        break\n    total += x\nprint(total)',
     reference:
-      'n = int(input())\nc = 0\nwhile n != 1:\n    if n % 2 == 0:\n        n //= 2\n    else:\n        n = 3 * n + 1\n    c += 1\nprint(c)',
+      'total = 0\nwhile True:\n    x = int(input())\n    if x == 0:\n        break\n    total += x\nprint(total)',
     cases: [
-      { input: '6\n', expected: '8', sample: true },
-      { input: '1\n', expected: '0' },
-      { input: '3\n', expected: '7' },
-      { input: '27\n', expected: '111' },
+      { input: '3\n5\n0\n', expected: '8', sample: true },
+      { input: '0\n', expected: '0' },
+      { input: '10\n-4\n7\n0\n', expected: '13' },
+      { input: '1\n2\n3\n4\n0\n', expected: '10' },
     ],
+    tip: '💡 終わりを知らせる特別な値で読み込みを止める書き方は、行数が事前に分からない入力の定番。',
   },
   {
     title: 'ユークリッドの互除法',

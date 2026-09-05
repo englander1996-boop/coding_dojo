@@ -5,7 +5,7 @@
 const TASKS = []
 const t = (obj) => TASKS.push(obj)
 
-t({ lv: 301, concept: '数論: 約数の個数', title: '約数の個数', tags: ['数論'], io: '整数 n (>=1) が1行で与えられます。', ask: 'n の正の約数の個数を出力してください。', h1: 'd*d<=n まで調べる。', h2: 'd が約数なら d と n//d の2個 (平方のときは1個)。', ref: 'n=int(input())\nc=0\nd=1\nwhile d*d<=n:\n    if n%d==0:\n        c+=1 if d==n//d else 2\n    d+=1\nprint(c)', tip: '約数は平方根を境にペアになる。', ins: ['12\n', '1\n', '36\n', '7\n', '100\n', '1000000\n'] })
+t({ lv: 301, concept: '数論: 半完全数の判定', title: '約数をいくつか足して自分になる', tags: ['数論', 'DP'], io: '整数 n (>=1) が1行で与えられます。', ask: 'n 自身を除く約数(真の約数)の中からいくつかを選び、和をちょうど n にできるなら yes、どう選んでもできないなら no を出力してください。', h1: 'まず真の約数をすべて集める。', h2: '作れる和の集合を用意し、約数を1つずつ「足す/足さない」で広げていく。', ref: 'n=int(input())\ndivs=[d for d in range(1,n) if n%d==0]\nposs={0}\nfor d in divs:\n    poss|={p+d for p in poss if p+d<=n}\nprint("yes" if n in poss else "no")', tip: '過剰度(同レベル既出)は真の約数の和が n を超えるかを測るだけだったが、超えていても n ちょうどを組めるとは限らない。約数の列挙と部分和の考え方が合流する判定で、完全数は真の約数を全部使う特別な場合として自然にこの仲間に入る。', ins: ['6\n', '12\n', '8\n', '70\n', '20\n', '1\n'] })
 
 t({ lv: 302, concept: '数論: 区間の素数の個数', title: '区間内の素数の個数', tags: ['数論'], io: 'L R が空白区切りで与えられます (2<=L<=R)。', ask: 'L 以上 R 以下の素数の個数を出力してください。', h1: 'エラトステネスの篩で R まで判定。', h2: '区間内の True を数える。', ref: 'l,r=map(int,input().split())\nsieve=[True]*(r+1)\nsieve[0]=False\nsieve[1]=False\ni=2\nwhile i*i<=r:\n    if sieve[i]:\n        for j in range(i*i,r+1,i):\n            sieve[j]=False\n    i+=1\nprint(sum(1 for x in range(l,r+1) if sieve[x]))', tip: '篩は合成数を倍数として消す。i*i から消し始めれば十分。', ins: ['2 10\n', '10 20\n', '2 2\n', '14 16\n', '2 100\n', '90 100\n'] })
 

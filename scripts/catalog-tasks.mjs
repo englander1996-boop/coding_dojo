@@ -30,7 +30,7 @@ const NUMFUN = [
   { key: 'maxdigit', title: '最大の桁', ref: 'n=int(input())\nprint(max(str(n)))', h1: '文字の大小は数字の大小と一致。', h2: 'max(str(n))。', exp: '文字のままでも大小比較できる。', ins: DIGITY },
   { key: 'mindigit', title: '最小の桁', ref: 'n=int(input())\nprint(min(str(n)))', h1: 'min(str(n))。', h2: '文字の最小=最小の数字。', exp: 'min で最小桁。', ins: DIGITY },
   { key: 'revnum', title: '数字を逆順に', ref: 'n=int(input())\nprint(int(str(n)[::-1]))', h1: '文字列スライス [::-1] で反転。', h2: 'int に戻すと先頭0が消える。', exp: 's[::-1] で反転、int で数値化。', ins: DIGITY, tip: '💡 s[::-1] は文字列・リストの逆順の定番。' },
-  { key: 'ndiv', title: '約数の個数', ref: 'n=int(input())\nc=0\ni=1\nwhile i*i<=n:\n    if n%i==0:\n        c+=2 if i*i!=n else 1\n    i+=1\nprint(c)', h1: '√n まで調べればペアで数えられる。', h2: 'i と n//i が同じときは1個。', exp: '約数はペアで現れる。', ins: INTS },
+  { key: 'ndiv', title: '大きい n でも間に合う約数の個数', ask: 'n の正の約数の個数を出力してください。ただし 1 から n まで1つずつ試すのではなく、i*i が n を超えない範囲だけを調べて求めてください。', ref: 'n=int(input())\nc=0\ni=1\nwhile i*i<=n:\n    if n%i==0:\n        c+=2 if i*i!=n else 1\n    i+=1\nprint(c)', h1: '約数は i と n//i のペアで現れるので、i*i<=n の範囲だけ見れば全部拾える。', h2: 'i*i がちょうど n のときはペアの2つが重なるので1個と数える。', exp: '1 から n まで全部試すと n に比例した回数のループになるが、約数がペアで現れることを使えば √n 程度の回数で済む。', ins: INTS, tip: '💡 同じ段に「1 から N まで全部試す」版もある。答えは同じでも、n が大きくなるほど調べる回数の差が開く。' },
   { key: 'sumdiv', title: '約数の和', ref: 'n=int(input())\ns=0\ni=1\nwhile i*i<=n:\n    if n%i==0:\n        s+=i\n        if i*i!=n:\n            s+=n//i\n    i+=1\nprint(s)', h1: '√n までで約数をペアで集める。', h2: 'i と n//i を足す(同じなら1回)。', exp: '約数の和も√nで。', ins: INTS },
   { key: 'isprime', title: '素数判定', ref: 'n=int(input())\nif n<2:\n    print("no")\nelse:\n    p=True\n    i=2\n    while i*i<=n:\n        if n%i==0:\n            p=False\n            break\n        i+=1\n    print("yes" if p else "no")', h1: '2〜√n で割り切れなければ素数。', h2: '1以下は素数でない。', exp: '√nまでの試し割り。', ins: INTS },
   { key: 'fact', title: '階乗', ref: 'n=int(input())\np=1\nfor i in range(2,n+1):\n    p*=i\nprint(p)', h1: '1〜n を掛ける。', h2: '初期値1。', exp: 'n! の反復計算。', ins: SMALL },
@@ -51,7 +51,7 @@ const NUMFUN = [
   { key: 'sigmacount', title: 'n以下の素数の個数', ref: 'n=int(input())\nif n<2:\n    print(0)\nelse:\n    sieve=[True]*(n+1)\n    sieve[0]=sieve[1]=False\n    i=2\n    while i*i<=n:\n        if sieve[i]:\n            for j in range(i*i,n+1,i):\n                sieve[j]=False\n        i+=1\n    print(sum(sieve))', h1: 'エラトステネスの篩。', h2: '篩った後 True を数える。', exp: '篩で素数の個数。', ins: ['10\n', '20\n', '2\n', '100\n', '1\n', '30\n'] },
 ]
 for (const f of NUMFUN) {
-  t({ lv: 7, concept: '整数関数: ' + f.title, title: f.title, tags: ['整数', 'ループ'], io: '1つの整数 n が与えられます。', ask: `${f.title}を求めて出力してください。`, h1: f.h1, h2: f.h2, exp: f.exp, ref: f.ref, ins: f.ins, tip: f.tip })
+  t({ lv: 7, concept: '整数関数: ' + f.title, title: f.title, tags: ['整数', 'ループ'], io: '1つの整数 n が与えられます。', ask: f.ask || `${f.title}を求めて出力してください。`, h1: f.h1, h2: f.h2, exp: f.exp, ref: f.ref, ins: f.ins, tip: f.tip })
 }
 
 // ============================================================
@@ -79,14 +79,14 @@ for (const f of TWO) {
 // Family 3: 整数リストの集計 g(list)
 // ============================================================
 const LISTFUN = [
-  { title: '合計', ref: 'a=list(map(int,input().split()))\nprint(sum(a))', h1: 'sum。', h2: '足し上げる。' },
+  { title: '正の数の合計', ref: 'a=list(map(int,input().split()))\nprint(sum(x for x in a if x>0))', h1: '正のものだけ足す。', h2: '内包表記で条件を付ける。' },
   { title: '最大値', ref: 'a=list(map(int,input().split()))\nprint(max(a))', h1: 'max。', h2: '組み込み。' },
   { title: '最小値', ref: 'a=list(map(int,input().split()))\nprint(min(a))', h1: 'min。', h2: '組み込み。' },
   { title: '最大と最小の差', ref: 'a=list(map(int,input().split()))\nprint(max(a)-min(a))', h1: 'max-min。', h2: 'レンジ。' },
   { title: '偶数の個数', ref: 'a=list(map(int,input().split()))\nprint(sum(1 for x in a if x%2==0))', h1: '%2==0 を数える。', h2: '内包で件数。' },
   { title: '奇数の個数', ref: 'a=list(map(int,input().split()))\nprint(sum(1 for x in a if x%2==1))', h1: '%2==1。', h2: '件数。' },
   { title: '種類の数', ref: 'a=list(map(int,input().split()))\nprint(len(set(a)))', h1: 'set で重複除去。', h2: 'len(set)。' },
-  { title: '2番目に大きい値', ref: 'a=list(map(int,input().split()))\nprint(sorted(set(a))[-2])', h1: '重複を除いてソート。', h2: '後ろから2番目。', ins: ['3 1 4 1 5\n', '9 2 6 5 3\n', '1 2\n', '7 8 9\n', '10 1 100 50 2\n', '8 6 4 2\n'] },
+  { title: '重複を除いて2番目に大きい値', ref: 'a=list(map(int,input().split()))\nprint(sorted(set(a))[-2])', h1: '重複を除いてソート。', h2: 'set で重複を消してから後ろから2番目。', ins: ['3 1 4 1 5\n', '9 2 6 5 3\n', '1 2\n', '7 8 9\n', '10 1 100 50 2\n', '8 6 4 2\n'] },
   { title: '昇順に並べて出力', ref: 'a=list(map(int,input().split()))\nprint(*sorted(a))', h1: 'sorted。', h2: 'print(*list)。' },
   { title: '降順に並べて出力', ref: 'a=list(map(int,input().split()))\nprint(*sorted(a,reverse=True))', h1: 'reverse=True。', h2: '降順ソート。' },
   { title: '合計が偶数か', ref: 'a=list(map(int,input().split()))\nprint("yes" if sum(a)%2==0 else "no")', h1: 'sum の偶奇。', h2: '%2。' },
