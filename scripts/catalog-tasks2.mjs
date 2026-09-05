@@ -12,9 +12,9 @@ const SETFUN = [
   { title: 'aにだけある要素数', ref: 'a=set(input().split())\nb=set(input().split())\nprint(len(a-b))', h1: '- が差集合。', h2: 'a から b を引く。' },
   { title: '対称差の要素数', ref: 'a=set(input().split())\nb=set(input().split())\nprint(len(a^b))', h1: '^ が対称差。', h2: 'どちらか一方だけ。' },
   { title: 'aはbの部分集合か', ref: 'a=set(input().split())\nb=set(input().split())\nprint("yes" if a<=b else "no")', h1: '<= で部分集合判定。', h2: 'a の全要素が b に。' },
-  { title: '共通要素を昇順で', ref: 'a=set(map(int,input().split()))\nb=set(map(int,input().split()))\nprint(*sorted(a&b))', h1: '積集合をソート。', h2: 'print(*...)。' },
+  { title: '共通要素を昇順で', ref: 'a=set(map(int,input().split()))\nb=set(map(int,input().split()))\nprint(*sorted(a&b))', h1: '積集合をソート。', h2: 'print(*...)。', ask: '両方に現れる整数を昇順に、空白区切りで1行に出力してください。共通する整数が必ず1つ以上ある入力だけが与えられます。', ins: ['1 2 3 4\n2 4 6 8\n', '5 5 6\n6 7\n', '1 2 3\n1 2 3\n', '10 20\n20 30 40\n', '9 8 7\n7 8 9 10\n', '3 1 4 1 5\n5 9 2 6 5 3\n'] },
 ]
-for (const f of SETFUN) t({ lv: 13, concept: '集合演算: ' + f.title, title: f.title, tags: ['set', '集合'], io: '1行目と2行目に、それぞれ空白区切りの整数列が与えられます。', ask: `${f.title}を出力してください。`, h1: f.h1, h2: f.h2, ref: f.ref, ins: TWOLISTS, tip: f.tip })
+for (const f of SETFUN) t({ lv: 13, concept: '集合演算: ' + f.title, title: f.title, tags: ['set', '集合'], io: '1行目と2行目に、それぞれ空白区切りの整数列が与えられます。', ask: f.ask || `${f.title}を出力してください。`, h1: f.h1, h2: f.h2, ref: f.ref, ins: f.ins || TWOLISTS, tip: f.tip })
 
 // ---- リスト→リスト変換（出力も列） (lv30) ----
 const LISTS = ['3 1 4 1 5\n', '2 7 1 8 2\n', '10 20 30\n', '5 4 3 2 1\n', '1 2 3 4 5\n', '9 1 2 8 3\n']

@@ -116,11 +116,11 @@ const STRFUN = [
   { title: '逆順に', ref: 's=input()\nprint(s[::-1])', h1: '[::-1]。', h2: '反転スライス。' },
   { title: '母音の数', ref: 's=input()\nprint(sum(1 for c in s.lower() if c in "aeiou"))', h1: 'aeiou に含まれるか。', h2: '件数。' },
   { title: '回文か', ref: 's=input()\nprint("yes" if s==s[::-1] else "no")', h1: '反転と一致。', h2: '回文判定。' },
-  { title: '最も多い文字', ref: 'from collections import Counter\ns=input()\nprint(Counter(s).most_common(1)[0][0])', h1: 'Counter。', h2: 'most_common。' },
+  { title: '最も多い文字', ref: 'from collections import Counter\ns=input()\nc=Counter(s)\nm=max(c.values())\nfor ch in s:\n    if c[ch]==m:\n        print(ch)\n        break', h1: 'Counter で各文字の出現回数を数える。', h2: '回数の最大を求めてから、s を先頭から見て最初にその回数になる文字を出す。', ask: '最も多く現れる文字を出力してください。同じ回数の文字が複数あるときは、s の中で先に現れる方を出力してください。大文字と小文字は別の文字として数えます。', tip: '💡 Counter は数えるだけ。同点の決着ルールは自分で書かないと、たまたまの並び順に答えが左右される。' },
   { title: '異なる文字の数', ref: 's=input()\nprint(len(set(s)))', h1: 'set。', h2: '種類数。' },
   { title: '先頭を大文字に', ref: 's=input()\nprint(s.capitalize())', h1: '.capitalize()。', h2: '文頭だけ大文字。' },
   { title: '各単語の先頭を大文字に', ref: 's=input()\nprint(s.title())', h1: '.title()。', h2: '単語ごと。', tip: '💡 .title() は各単語の頭文字を大文字化。' },
-  { title: '数字を除いた文字列', ref: 's=input()\nprint("".join(c for c in s if not c.isdigit()))', h1: '.isdigit() で判定。', h2: '数字以外を連結。' },
+  { title: '数字を除いた文字列', ref: 's=input()\nprint("".join(c for c in s if not c.isdigit()))', h1: '.isdigit() で判定。', h2: '数字以外を連結。', ins: ['a1b2c3\n', 'hello\n', 'pass1234word\n', '007bond\n', 'x9y8z7\n', '2026nen\n'] },
   { title: 'a の出現回数', ref: 's=input()\nprint(s.count("a"))', h1: '.count("a")。', h2: '回数。' },
   { title: '中央寄せ(幅11,*)', ref: 's=input()\nprint(s.center(11,"*"))', h1: '.center(幅,文字)。', h2: '左右を*で埋める。', tip: '💡 .center/.ljust/.rjust で寄せ＋パディング。' },
   { title: '各文字をコード順で', ref: 's=input()\nprint(*sorted(s))', h1: 'sorted(s)。', h2: '文字を並べ替え。' },
@@ -132,7 +132,7 @@ const STRFUN = [
 ]
 for (const f of STRFUN) {
   const useWords = f.title.includes('単語')
-  t({ lv: 45, concept: '文字列処理: ' + f.title, title: f.title, tags: ['文字列'], io: '1行の文字列 s が与えられます。', ask: `${f.title}を出力してください。`, h1: f.h1, h2: f.h2, ref: f.ref, ins: useWords ? WORDS : STRS, tip: f.tip })
+  t({ lv: 45, concept: '文字列処理: ' + f.title, title: f.title, tags: ['文字列'], io: '1行の文字列 s が与えられます。', ask: f.ask || `${f.title}を出力してください。`, h1: f.h1, h2: f.h2, ref: f.ref, ins: f.ins || (useWords ? WORDS : STRS), tip: f.tip })
 }
 
 export const CATALOG = TASKS
