@@ -46,7 +46,10 @@ for (const p of ALL_PROBLEMS) {
     add('medium', '素のexit()', `${where} — sys.exit() を使うこと`)
   }
   // 期待値・参照解の非ASCII（cp932 で化ける）
-  if (/[^\x00-\x7F]/.test(p.reference)) add('medium', 'ref非ASCII', where)
+  // 参照解の日本語コメントは安全（実行時のペイロードは非ASCIIを全てエスケープしている）。
+  // 危ないのはコード本体や print される文字列に混ざる場合なので、コメントを除いてから見る。
+  const refCode = p.reference.replace(/#[^\n]*/g, '')
+  if (/[^\x00-\x7F]/.test(refCode)) add('medium', 'ref非ASCII(コメント以外)', where)
   const nonAsciiExp = p.testCases.filter((c) => /[^\x00-\x7F]/.test(c.expected)).length
   if (nonAsciiExp > 0) add('low', '期待値非ASCII', `${where} — ${nonAsciiExp}件`)
 
