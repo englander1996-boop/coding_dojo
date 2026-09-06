@@ -29,7 +29,7 @@ t({ lv: 256, concept: '数論: 互いに素なペア数', title: 'リスト中�
 
 t({ lv: 257, concept: '数論: 隣接gcdの和', title: '隣り合う要素のgcdの和', tags: ['数論'], io: '正整数の列が1行で与えられます(2個以上)。', ask: '隣接する2要素の gcd を全て足した値を出力してください。', h1: '隣接ペアの gcd を取る。', h2: 'その合計。', ref: 'import math\na=list(map(int,input().split()))\nprint(sum(math.gcd(a[i],a[i+1]) for i in range(len(a)-1)))', tip: '隣接gcdの和は zip(a, a[1:]) でペアを作って gcd を合計。系列の関連度の指標。', ins: ['4 6 8\n', '3 5\n', '12 18 6\n', '7 7 7\n', '2 4\n', '10 15 20'] })
 
-t({ lv: 258, concept: '数: 2乗和と和の2乗の差', title: '和の2乗と2乗和の差', tags: ['数学'], io: '整数列が1行で与えられます。', ask: '(要素の和)² から (要素の2乗の和) を引いた値を出力してください。', h1: '和と2乗和を別々に求める。', h2: '差を取る。', ref: 'a=list(map(int,input().split()))\ns=sum(a)\nsq=sum(x*x for x in a)\nprint(s*s-sq)', tip: '(Σx)²-Σx² = 2·Σ_{i<j}x_i·x_j(ペア積の2倍)。Project Euler の有名問題。', ins: ['1 2 3\n', '5\n', '1 1 1\n', '10 20\n', '0 0\n', '1 2 3 4'] })
+t({ lv: 258, concept: '数: 2乗和と和の2乗の差', title: '和の2乗と2乗和の差', tags: ['数学'], io: '整数列が1行で与えられます。', ask: '(要素の和)² から (要素の2乗の和) を引いた値を出力してください。', h1: '和と2乗和を別々に求める。', h2: '差を取る。', ref: 'a=list(map(int,input().split()))\ns=sum(a)\nsq=sum(x*x for x in a)\nprint(s*s-sq)', tip: '(Σx)²-Σx² = 2·Σ_{i<j}x_i·x_j(ペア積の2倍)という恒等式。ペア積の総和を割り算なしで一発で求める古典。', ins: ['1 2 3\n', '5\n', '1 1 1\n', '10 20\n', '0 0\n', '1 2 3 4'] })
 
 t({ lv: 259, concept: '配列: ハーシャッド数の個数', title: '桁和で割り切れる数の個数', tags: ['配列'], io: '正整数の列が1行で与えられます。', ask: '各要素が自身の桁和で割り切れる(ハーシャッド数)ものの個数を出力してください。', h1: '各要素の桁和を求める。', h2: '割り切れるか判定。', ref: 'a=input().split()\ncnt=0\nfor s in a:\n    ds=sum(int(c) for c in s)\n    if ds!=0 and int(s)%ds==0:\n        cnt+=1\nprint(cnt)', tip: 'ハーシャッド数判定を各要素に適用。桁和を計算してから整除を確認する。', ins: ['18 19 21\n', '1\n', '10 12\n', '100\n', '11 22 33\n', '13 17'] })
 
